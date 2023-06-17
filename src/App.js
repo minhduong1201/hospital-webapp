@@ -70,7 +70,7 @@ function App() {
           element={
             user ? (
               <Navigation title="Chat">
-                <Chat user={user} />
+                <Chat user={user}/>
               </Navigation>
             ) : (
               <LoginPage />

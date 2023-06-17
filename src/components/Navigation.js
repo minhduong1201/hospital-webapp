@@ -15,6 +15,7 @@ import Button from '@mui/material/Button';
 import ChatIcon from '@mui/icons-material/Chat';
 import HomeIcon from '@mui/icons-material/Home';
 import { useDispatch } from 'react-redux';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { logOutUser } from '../redux/userRedux';
 function Navigation({ children, title }) {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -69,7 +70,7 @@ function Navigation({ children, title }) {
           </ListItem>
           <ListItem button onClick={() => handleLogout()}>
             <ListItemIcon>
-              <ChatIcon />
+              <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="Đăng xuất" />
           </ListItem>
