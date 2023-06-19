@@ -17,6 +17,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { useDispatch } from 'react-redux';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logOutUser } from '../redux/userRedux';
+import { logOutHospital, updateHospital } from '../redux/hospitalRedux';
 function Navigation({ children, title }) {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function Navigation({ children, title }) {
 
   const handleLogout = () => {
     dispatch(logOutUser());
+    dispatch(logOutHospital());
   };
   
   return (

@@ -9,6 +9,10 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import { useDispatch } from "react-redux";
+
+import { publicRequest } from '../requestMethod';
+import { register } from '../redux/apiCalls';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +25,7 @@ const RegistrationForm = () => {
     img: '',
   });
 
+  const dispatch = useDispatch();
   const handleChange = (event) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -30,6 +35,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    register(dispatch, formData);
     // Đoạn code xử lý logic khi người dùng nhấn nút đăng ký
     console.log(formData);
   };

@@ -7,9 +7,12 @@ const hospitalSlice = createSlice({
     updateHospital: (state, action) => {
       return action.payload;
     },
+    logOutHospital: (state, action) => {
+      return null;
+    }
   },
 });
 
-export const { updateHospital } =
+export const { updateHospital, logOutHospital } =
   hospitalSlice.actions;
 export default hospitalSlice.reducer;
