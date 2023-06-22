@@ -41,9 +41,10 @@ const Chat = (props) => {
   useEffect(() => {
     if (!socket) return;
     // Lắng nghe sự kiện 'message' từ server và thêm tin nhắn mới vào danh sách
-    socket.on("receive_message", (newMessage) => {
-      if (checkIsReceivedMessage(newMessage))
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+    socket.on("receive_message", (data) => {
+      const {message} = data;
+      if (checkIsReceivedMessage(message))
+        setMessages((prevMessages) => [...prevMessages, message]);
     });
 
     return () => {
@@ -78,8 +79,8 @@ const Chat = (props) => {
 
     await userRequest.post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
-        socket.emit("message", res.data);
-        setMessages((prevMessages) => [...prevMessages,{message: res.data, user}]);
+        socket.emit("message",{message: res.data, user});
+        setMessages((prevMessages) => [...prevMessages, res.data]);
         setInputValue("");
       } else {
         alert("Không thể gửi tin nhắn");
