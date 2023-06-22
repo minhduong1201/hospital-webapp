@@ -25,7 +25,6 @@ const Chat = (props) => {
       const res = await userRequest.get(
         `/message?hospitalId=${hospital._id}&customerId=${user._id}`
       );
-      console.log(res);
       if (res.data) setMessages(res.data);
     };
     getMessages();
@@ -43,8 +42,6 @@ const Chat = (props) => {
     if (!socket) return;
     // Lắng nghe sự kiện 'message' từ server và thêm tin nhắn mới vào danh sách
     socket.on("receive_message", (newMessage) => {
-      console.log(newMessage);
-
       if (checkIsReceivedMessage(newMessage))
         setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
@@ -82,7 +79,7 @@ const Chat = (props) => {
     await userRequest.post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
         socket.emit("message", res.data);
-        setMessages((prevMessages) => [...prevMessages, res.data]);
+        setMessages((prevMessages) => [...prevMessages,{message: res.data, user}]);
         setInputValue("");
       } else {
         alert("Không thể gửi tin nhắn");

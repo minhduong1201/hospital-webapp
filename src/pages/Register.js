@@ -36,8 +36,6 @@ const RegistrationForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     register(dispatch, formData);
-    // Đoạn code xử lý logic khi người dùng nhấn nút đăng ký
-    console.log(formData);
   };
 
   return (

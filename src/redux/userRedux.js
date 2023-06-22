@@ -5,13 +5,16 @@ const userSlice = createSlice({
   initialState: null,
   reducers: {
     updateUser: (state, action) => {
-      return action.payload;
+      return {...state, ...action.payload};
     },
     logOutUser: (state) => {
       return null;
+    },
+    updateUserHospital: (state, action) => {
+      return {...state, ...action.payload}
     }
   },
 });
 
-export const { updateUser, logOutUser } = userSlice.actions;
+export const { updateUser, logOutUser, updateUserHospital } = userSlice.actions;
 export default userSlice.reducer;

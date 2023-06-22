@@ -1,14 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useDebugValue, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { updateHospital } from "../redux/hospitalRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { userRequest } from "../requestMethod";
 import { Link } from "react-router-dom";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { updateUserHospital } from "../redux/userRedux";
 function HospitalPage({ user }) {
   const { hospitalId } = user;
   const dispatch = useDispatch();
   const hospital = useSelector((state) => state.hospital);
+
+  useEffect(() => {
+    if (user.hospitalId) return;
+    const fetchUser = async () => {
+      await userRequest
+        .get(`/customers/user/${user._id}`)
+        .then((res) => {
+          if (res.data && res.data[0]) dispatch(updateUserHospital(res.data[0]));
+        })
+        .catch((err) => console.log(err));
+    };
+    fetchUser();
+  }, []);
+
   useEffect(() => {
     if (!hospitalId) return;
     const getHospital = async () => {
@@ -18,11 +33,6 @@ function HospitalPage({ user }) {
     };
     getHospital();
   }, [hospitalId]);
-
-  const handleChatClick = () => {
-    // Xử lý mở cửa sổ chat
-    // ...
-  };
 
   return (
     <div style={{ padding: "0 10px" }}>
@@ -42,8 +52,6 @@ function HospitalPage({ user }) {
             <strong>Chi tiết:</strong>
           </p>
           <p>{hospital.infor}</p>
-          {/* Hiển thị các thông tin bệnh viện khác */}
-          {/* ... */}
         </>
       ) : (
         <>

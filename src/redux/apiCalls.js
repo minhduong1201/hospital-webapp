@@ -25,25 +25,6 @@ export const login = async (dispatch, user) => {
   }
 };
 
-
-// export const getCustomersWithHeartRate = async (customers, dispatch) => {
-//   const data = Promise.all(
-//     customers.map((customer) => userRequest.get(`/heart_rate/${customer._id}`))
-//   )
-//     .then((list) => {
-//       console.log(list);
-//       const payload = customers.map((customer, index) => ({
-//         ...customer,
-//         heart_rate: list[index].data?.value,
-//         last_update: list[index].data?.createdAt
-//       }));
-//       console.log(payload);
-//       dispatch(updateUser(payload));
-//     })
-//     .catch((error) => console.log(error));
-//   return data;
-// };
-
 export const updateUserInfor = async (employee, dispatch, id) => {
   try {
     const res = await userRequest.put(`/customers/${id}`, employee);

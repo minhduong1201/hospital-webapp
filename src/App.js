@@ -46,7 +46,7 @@ function App() {
           element={
             user ? (
               <Navigation title="Thông tin cá nhân">
-                <ProfilePage user={user} />
+                <ProfilePage/>
               </Navigation>
             ) : (
               <LoginPage />
