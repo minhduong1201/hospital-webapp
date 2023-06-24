@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Button,
   TextField,
@@ -8,34 +8,48 @@ import {
   FormHelperText,
   Typography,
   Box,
-} from '@mui/material';
+} from "@mui/material";
 import { useDispatch } from "react-redux";
 
-import { publicRequest } from '../requestMethod';
-import { register } from '../redux/apiCalls';
+import { publicRequest } from "../requestMethod";
+import { register } from "../redux/apiCalls";
 
 const RegistrationForm = () => {
+  const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    username: '',
-    password: '',
-    phone: '',
-    address: '',
-    age: '',
-    img: '',
+    name: "",
+    username: "",
+    password: "",
+    phone: "",
+    address: "",
+    age: "",
+    img: "",
   });
 
   const dispatch = useDispatch();
   const handleChange = (event) => {
+    let { name, value } = event.target;
+    if (name == "img") {
+      value = event.target.files?.[0];
+    }
     setFormData((prevData) => ({
       ...prevData,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = (event) => {
+    const form = new FormData();
+    const { name, username, password, phone, address, age, img } = formData;
+    form.append("name", name);
+    form.append("username", username);
+    form.append("password", password);
+    form.append("phone", phone);
+    form.append("address", address);
+    form.append("age", age);
+    form.append("img", img);
     event.preventDefault();
-    register(dispatch, formData);
+    register(dispatch, form);
   };
 
   return (
@@ -43,12 +57,12 @@ const RegistrationForm = () => {
       component="form"
       onSubmit={handleSubmit}
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '16px',
-        maxWidth: '400px',
-        margin: '0 auto',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "16px",
+        maxWidth: "400px",
+        margin: "0 auto",
       }}
     >
       <Typography variant="h6">Đăng ký</Typography>
@@ -116,14 +130,15 @@ const RegistrationForm = () => {
         />
       </FormControl>
       <FormControl>
-        <InputLabel htmlFor="img-input">Ảnh đại diện</InputLabel>
+        {/* <InputLabel htmlFor="img-input">Ảnh đại diện</InputLabel> */}
         <Input
           id="img-input"
           name="img"
-          type="text"
-          value={formData.img}
+          type="file"
+          // value={formData.img}
           onChange={handleChange}
         />
+        {/* <input type="file" id="img-input" name="img" onChange={handleChange} /> */}
       </FormControl>
       <Button type="submit" variant="contained" color="primary">
         Đăng ký

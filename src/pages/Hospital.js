@@ -17,7 +17,8 @@ function HospitalPage({ user }) {
       await userRequest
         .get(`/customers/user/${user._id}`)
         .then((res) => {
-          if (res.data && res.data[0]) dispatch(updateUserHospital(res.data[0]));
+          if (res.data && res.data[0])
+            dispatch(updateUserHospital(res.data[0]));
         })
         .catch((err) => console.log(err));
     };
@@ -25,7 +26,10 @@ function HospitalPage({ user }) {
   }, []);
 
   useEffect(() => {
-    if (!hospitalId) return;
+    if (!hospitalId) {
+      dispatch(updateHospital(null));
+      return;
+    }
     const getHospital = async () => {
       await userRequest
         .get(`/hospital/${hospitalId}`)

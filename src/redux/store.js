@@ -12,6 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import alertRedux from "./alertRedux";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +23,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   hospital: hospitalReducer,
+  alert: alertRedux
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -2,35 +2,50 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userRequest } from "../requestMethod";
 import { updateUser } from "../redux/userRedux";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 function ProfilePage() {
   const user = useSelector((state) => state.user);
-  const { _id, name, address, age, phone, health } = user;
+  const { _id, name, address, age, phone, health, img } = user;
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!user._id) return;
+    if (!_id) return;
     const fetchUser = async () => {
-      await userRequest
-        .get(`/customers/user/${user._id}`)
-        .then((res) => {
-          if (res.data && res.data[0]) dispatch(updateUser(res.data[0]))
-        })
-        .catch((err) => console.log(err));
+      try {
+        const res = await userRequest.get(`/customers/user/${_id}`);
+        if (res.data && res.data[0]) {
+          dispatch(updateUser(res.data[0]));
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchUser();
-  }, []);
+  }, [_id, dispatch]);
+
   return (
-    <div style={{ padding: "0 10px" }}>
-      <h2>Thông tin cá nhân</h2>
-      <p>ID: {_id}</p>
-      <p>Tên: {name}</p>
-      <p>Địa chỉ: {address}</p>
-      <p>Tuổi: {age}</p>
-      <p>Số điện thoại: {phone}</p>
-      <p>Tình trạng sức khỏe: {health || "đang đánh giá"}</p>
-      {/* Các trường thông tin cá nhân khác */}
-      {/* ... */}
-    </div>
+    <Card sx={{ maxWidth: 500, margin: "0 auto", mt: 2 }}>
+      <CardContent>
+        <Typography variant="body1">ID: {_id}</Typography>
+        <Typography variant="body1">Tên: {name}</Typography>
+        <Typography variant="body1">Địa chỉ: {address}</Typography>
+        <Typography variant="body1">Tuổi: {age}</Typography>
+        <Typography variant="body1">Số điện thoại: {phone}</Typography>
+        <Typography variant="body1">
+          Tình trạng sức khỏe: {health || "đang đánh giá"}
+        </Typography>
+        {/* Other personal information fields */}
+        {/* ... */}
+        {img && (
+          <CardMedia
+            component="img"
+            src={img}
+            alt="Profile Image"
+            sx={{ width: "100%", mt: 2 }}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

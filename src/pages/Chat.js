@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, TextField, IconButton, Divider } from "@mui/material";
 import { Send as SendIcon } from "@mui/icons-material";
 import io from "socket.io-client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userRequest } from "../requestMethod";
+import { alertError } from "../utils/tools";
 
 const Chat = (props) => {
   const { user } = props;
@@ -11,7 +12,7 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const hospital = useSelector((state) => state.hospital);
-
+  const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Chat = (props) => {
     if (!hospital) return;
     const getMessages = async () => {
       const res = await userRequest.get(
-        `/message?hospitalId=${hospital._id}&customerId=${user._id}`
+        `/message?hospitalId=${user.hospitalId}&customerId=${user._id}`
       );
       if (res.data) setMessages(res.data);
     };
@@ -42,7 +43,7 @@ const Chat = (props) => {
     if (!socket) return;
     // Lắng nghe sự kiện 'message' từ server và thêm tin nhắn mới vào danh sách
     socket.on("receive_message", (data) => {
-      const {message} = data;
+      const { message } = data;
       if (checkIsReceivedMessage(message))
         setMessages((prevMessages) => [...prevMessages, message]);
     });
@@ -55,23 +56,24 @@ const Chat = (props) => {
   const checkIsReceivedMessage = (message) => {
     const { hospitalId, customerId, sender } = message;
     if (
-      hospitalId == hospital._id &&
+      hospitalId == user.hospitalId &&
       customerId == user._id &&
       sender == "hospital"
     )
       return true;
     return false;
   };
-  
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
   const handleSendMessage = async () => {
     if (inputValue.trim() === "") return;
-
+    if (!user.hospitalId) return;
+    
     const newMessage = {
-      hospitalId: hospital._id,
+      hospitalId: user.hospitalId,
       customerId: user._id,
       sender: "user", // or 'hospital' for messages from the hospital
       message: inputValue,
@@ -79,11 +81,11 @@ const Chat = (props) => {
 
     await userRequest.post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
-        socket.emit("message",{message: res.data, user});
+        socket.emit("message", { message: res.data, user });
         setMessages((prevMessages) => [...prevMessages, res.data]);
         setInputValue("");
       } else {
-        alert("Không thể gửi tin nhắn");
+        alertError(dispatch, "Không thể gửi tin nhắn!")
       }
     });
   };
@@ -96,7 +98,6 @@ const Chat = (props) => {
       height="100%"
     >
       <Box p={2}>
-        <Typography variant="h6">Chat với bệnh viện</Typography>
         <Box mt={2} style={{ height: 687, overflow: "auto" }}>
           {messages.map((message, index) => (
             <Box

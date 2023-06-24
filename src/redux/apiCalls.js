@@ -1,16 +1,15 @@
 import { publicRequest, userRequest } from "../requestMethod";
+import { alertError, alertSuccess } from "../utils/tools";
 import { updateHospital } from "./hospitalRedux";
-import {
-  updateUser
-} from "./userRedux";
+import { updateUser } from "./userRedux";
 
 export const register = async (dispatch, user) => {
   try {
     await publicRequest.post(`/auth/register/customer`, user);
 
-    alert("Đăng ký thành công!");
+    alertSuccess(dispatch, "Đăng ký thành công!");
   } catch (err) {
-    alert("Tên đăng nhập và mật khẩu này đã tồn tại!");
+    alertError(dispatch, "Tên đăng nhập và mật khẩu này đã tồn tại!");
   }
 };
 
@@ -19,9 +18,9 @@ export const login = async (dispatch, user) => {
     const res = await publicRequest.post(`/auth/login/customer`, user);
     console.log(res.data);
     dispatch(updateUser(res.data));
-    alert("Đăng nhập thành công!");
+    alertSuccess(dispatch, "Đăng nhập thành công!");
   } catch (err) {
-    alert("Vui lòng nhập đúng tên đăng nhập và mật khẩu!");
+    alertError(dispatch, "Vui lòng nhập đúng tên đăng nhập và mật khẩu!");
   }
 };
 
