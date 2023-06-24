@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser, updateUser } from "./redux/userRedux";
 import Chat from "./pages/Chat";
+import Alert from "./components/Alert";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -85,15 +86,10 @@ function App() {
         />
         <Route
           path="/login"
-          element={
-            user ? (
-              <Navigate to="/"></Navigate>
-            ) : (
-              <LoginPage/>
-            )
-          }
+          element={user ? <Navigate to="/"></Navigate> : <LoginPage />}
         />
       </Routes>
+      <Alert />
     </Router>
   );
 }

@@ -16,9 +16,8 @@ export const register = async (dispatch, user) => {
 export const login = async (dispatch, user) => {
   try {
     const res = await publicRequest.post(`/auth/login/customer`, user);
-    console.log(res.data);
-    dispatch(updateUser(res.data));
     alertSuccess(dispatch, "Đăng nhập thành công!");
+    dispatch(updateUser(res.data));
   } catch (err) {
     alertError(dispatch, "Vui lòng nhập đúng tên đăng nhập và mật khẩu!");
   }
