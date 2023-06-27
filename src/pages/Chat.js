@@ -5,6 +5,8 @@ import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { userRequest } from "../requestMethod";
 import { alertError } from "../utils/tools";
+import { updateHospital } from "../redux/hospitalRedux";
+import { updateUserHospital } from "../redux/userRedux";
 
 const Chat = (props) => {
   const { user } = props;
@@ -14,17 +16,31 @@ const Chat = (props) => {
   const hospital = useSelector((state) => state.hospital);
   const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
-
+  const {hospitalId} = user;
   useEffect(() => {
     // Cuộn xuống cuối cùng khi có tin nhắn mới
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   useEffect(() => {
-    if (!hospital) return;
+    if (hospitalId) return;
+    const fetchUser = async () => {
+      await userRequest
+        .get(`/customers/user/${user._id}`)
+        .then((res) => {
+          if (res.data && res.data[0])
+            dispatch(updateUserHospital(res.data[0]));
+        })
+        .catch((err) => console.log(err));
+    };
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (!hospitalId) return;
     const getMessages = async () => {
       const res = await userRequest.get(
-        `/message?hospitalId=${user.hospitalId}&customerId=${user._id}`
+        `/message?hospitalId=${hospitalId}&customerId=${user._id}`
       );
       if (res.data) setMessages(res.data);
     };
@@ -37,7 +53,7 @@ const Chat = (props) => {
     return () => {
       newSocket.close();
     };
-  }, [hospital]);
+  }, [user]);
 
   useEffect(() => {
     if (!socket) return;
@@ -71,7 +87,7 @@ const Chat = (props) => {
   const handleSendMessage = async () => {
     if (inputValue.trim() === "") return;
     if (!user.hospitalId) return;
-    
+
     const newMessage = {
       hospitalId: user.hospitalId,
       customerId: user._id,
@@ -85,12 +101,12 @@ const Chat = (props) => {
         setMessages((prevMessages) => [...prevMessages, res.data]);
         setInputValue("");
       } else {
-        alertError(dispatch, "Không thể gửi tin nhắn!")
+        alertError(dispatch, "Không thể gửi tin nhắn!");
       }
     });
   };
 
-  return (
+  return user.hospitalId ? (
     <Box
       display="flex"
       flexDirection="column"
@@ -143,6 +159,8 @@ const Chat = (props) => {
         </IconButton>
       </Box>
     </Box>
+  ) : (
+    <>Chưa có bệnh viện</>
   );
 };
 

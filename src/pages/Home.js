@@ -12,6 +12,7 @@ import { userRequest } from "../requestMethod";
 function HomePage({ user }) {
   const [heartRate, setHeartRate] = useState({});
   useEffect(() => {
+    if (!user._id) return;
     const interval = setInterval(() => {
       getHeartRate();
     }, 1000);
