@@ -19,6 +19,7 @@ export const login = async (dispatch, user) => {
     console.log(res);
     alertSuccess(dispatch, "Đăng nhập thành công!");
     dispatch(updateUser(res.data));
+    localStorage.setItem("TOKEN_INIT", res.data.accessToken);
   } catch (err) {
     alertError(dispatch, "Vui lòng nhập đúng tên đăng nhập và mật khẩu!");
   }
