@@ -24,11 +24,3 @@ export const login = async (dispatch, user) => {
     alertError(dispatch, "Vui lòng nhập đúng tên đăng nhập và mật khẩu!");
   }
 };
-
-export const updateUserInfor = async (employee, dispatch, id) => {
-  try {
-    const res = await userRequest.put(`/customers/${id}`, employee);
-  } catch (err) {
-    console.log(err);
-  }
-};

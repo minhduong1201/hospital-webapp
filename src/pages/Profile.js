@@ -6,13 +6,14 @@ import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 function ProfilePage() {
   const user = useSelector((state) => state.user);
+  const accessToken=user?.accessToken; 
   const { _id, name, address, age, phone, health, img } = user;
   const dispatch = useDispatch();
   useEffect(() => {
     if (!_id) return;
     const fetchUser = async () => {
       try {
-        const res = await userRequest.get(`/customers/user/${_id}`);
+        const res = await userRequest(accessToken).get(`/customers/user/${_id}`);
         if (res.data && res.data[0]) {
           dispatch(updateUser(res.data[0]));
         }

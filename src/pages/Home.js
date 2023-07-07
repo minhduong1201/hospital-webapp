@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import "react-circular-progressbar/dist/styles.css";
 import { userRequest } from "../requestMethod";
 
-function HomePage({ user }) {
+function HomePage({ user, accessToken }) {
   const [heartRate, setHeartRate] = useState({});
   useEffect(() => {
     if (!user._id) return;
@@ -23,7 +23,7 @@ function HomePage({ user }) {
   }, []);
 
   const getHeartRate = async () => {
-    await userRequest.get(`/heart_rate/${user._id}`).then(res => setHeartRate(res.data)).catch(err => err);
+    await userRequest(accessToken).get(`/heart_rate/${user._id}`).then(res => setHeartRate(res.data)).catch(err => err);
   };
 
   const percentage = ((heartRate - 50) / (160 - 50)) * 100;

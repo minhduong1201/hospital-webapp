@@ -6,7 +6,7 @@ import { userRequest } from "../requestMethod";
 import { Link } from "react-router-dom";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { updateUserHospital } from "../redux/userRedux";
-function HospitalPage({ user }) {
+function HospitalPage({ user, accessToken}) {
   const { hospitalId } = user;
   const dispatch = useDispatch();
   const hospital = useSelector((state) => state.hospital);
@@ -14,7 +14,7 @@ function HospitalPage({ user }) {
   useEffect(() => {
     if (user.hospitalId) return;
     const fetchUser = async () => {
-      await userRequest
+      await userRequest(accessToken)
         .get(`/customers/user/${user._id}`)
         .then((res) => {
           if (res.data && res.data[0])
@@ -31,7 +31,7 @@ function HospitalPage({ user }) {
       return;
     }
     const getHospital = async () => {
-      await userRequest
+      await userRequest(accessToken)
         .get(`/hospital/${hospitalId}`)
         .then((res) => dispatch(updateHospital(res.data)));
     };

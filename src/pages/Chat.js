@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Typography, TextField, IconButton, Divider } from "@mui/material";
+import { Box, Typography, TextField, IconButton, Divider } from "@mui/m aterial";
 import { Send as SendIcon } from "@mui/icons-material";
 import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { updateHospital } from "../redux/hospitalRedux";
 import { updateUserHospital } from "../redux/userRedux";
 
 const Chat = (props) => {
-  const { user } = props;
+  const { user, accessToken } = props;
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -25,11 +25,11 @@ const Chat = (props) => {
   useEffect(() => {
     if (hospitalId) return;
     const fetchUser = async () => {
-      await userRequest
+      await userRequest(accessToken)
         .get(`/customers/user/${user._id}`)
         .then((res) => {
           if (res.data && res.data[0])
-            dispatch(updateUserHospital(res.data[0]));
+          dispatch(updateUserHospital(res.data[0]));
         })
         .catch((err) => console.log(err));
     };
@@ -39,7 +39,7 @@ const Chat = (props) => {
   useEffect(() => {
     if (!hospitalId) return;
     const getMessages = async () => {
-      const res = await userRequest.get(
+      const res = await userRequest(accessToken).get(
         `/message?hospitalId=${hospitalId}&customerId=${user._id}`
       );
       if (res.data) setMessages(res.data);
@@ -95,7 +95,7 @@ const Chat = (props) => {
       message: inputValue,
     };
 
-    await userRequest.post(`/message`, newMessage).then((res) => {
+    await userRequest(accessToken).post(`/message`, newMessage).then((res) => {
       if (200 <= res.status < 300) {
         socket.emit("message", { message: res.data, user });
         setMessages((prevMessages) => [...prevMessages, res.data]);

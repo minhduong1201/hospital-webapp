@@ -20,7 +20,7 @@ import Alert from "./components/Alert";
 function App() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  const {accessToken} = user;
   return (
     <Router>
       <Routes>
@@ -29,7 +29,7 @@ function App() {
           element={
             user ? (
               <Navigation title="Trang chủ">
-                <HomePage user={user} />
+                <HomePage accessToken={accessToken} user={user} />
               </Navigation>
             ) : (
               <Navigate to="/login" />
@@ -41,7 +41,7 @@ function App() {
           element={
             user ? (
               <Navigation title={"Đăng ký"}>
-                <HomePage user={user} />
+                <HomePage accessToken={accessToken} user={user} />
               </Navigation>
             ) : (
               <Register />
@@ -53,7 +53,7 @@ function App() {
           element={
             user ? (
               <Navigation title="Thông tin cá nhân">
-                <ProfilePage />
+                <ProfilePage accessToken={accessToken}/>
               </Navigation>
             ) : (
               <Navigate to="/login" />
@@ -65,7 +65,7 @@ function App() {
           element={
             user ? (
               <Navigation title="Thông tin bệnh viện">
-                <HospitalPage user={user} />
+                <HospitalPage accessToken={accessToken} user={user} />
               </Navigation>
             ) : (
               <Navigate to="/login" />
@@ -77,7 +77,7 @@ function App() {
           element={
             user ? (
               <Navigation title="Chat">
-                <Chat user={user} />
+                <Chat accessToken={accessToken} user={user} />
               </Navigation>
             ) : (
               <Navigate to="/login" />
