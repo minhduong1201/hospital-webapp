@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Typography, TextField, IconButton, Divider } from "@mui/m aterial";
+import { Box, Typography, TextField, IconButton, Divider } from "@mui/material";
 import { Send as SendIcon } from "@mui/icons-material";
 import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
@@ -114,7 +114,7 @@ const Chat = (props) => {
       height="100%"
     >
       <Box p={2}>
-        <Box mt={2} style={{ height: 687, overflow: "auto" }}>
+        <Box mt={2} style={{ height: 550, overflow: "auto" }}>
           {messages.map((message, index) => (
             <Box
               key={index}

@@ -6,7 +6,7 @@ import { userRequest } from "../requestMethod";
 import { Link } from "react-router-dom";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { updateUserHospital } from "../redux/userRedux";
-function HospitalPage({ user, accessToken}) {
+function HospitalPage({ user, accessToken }) {
   const { hospitalId } = user;
   const dispatch = useDispatch();
   const hospital = useSelector((state) => state.hospital);
@@ -66,16 +66,20 @@ function HospitalPage({ user, accessToken}) {
           </p>
         </>
       )}
-      <Link to="/chat">
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ float: "right", marginRight: 10 }}
-          endIcon={<ArrowRightIcon />}
-        >
-          Chat với bệnh viện
-        </Button>
-      </Link>
+      {hospitalId ? (
+        <Link to="/chat">
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ float: "right", marginRight: 10 }}
+            endIcon={<ArrowRightIcon />}
+          >
+            Chat với bệnh viện
+          </Button>
+        </Link>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

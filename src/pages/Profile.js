@@ -22,7 +22,7 @@ function ProfilePage() {
       }
     };
     fetchUser();
-  }, [_id, dispatch]);
+  }, [_id]);
 
   return (
     <Card sx={{ maxWidth: 500, margin: "0 auto", mt: 2 }}>

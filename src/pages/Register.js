@@ -131,6 +131,7 @@ const RegistrationForm = () => {
       </FormControl>
       <FormControl>
         {/* <InputLabel htmlFor="img-input">Ảnh đại diện</InputLabel> */}
+        <span>Ảnh đại diện</span>
         <Input
           id="img-input"
           name="img"

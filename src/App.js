@@ -19,8 +19,7 @@ import Alert from "./components/Alert";
 
 function App() {
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const {accessToken} = user;
+  const accessToken = user?.accessToken;
   return (
     <Router>
       <Routes>
