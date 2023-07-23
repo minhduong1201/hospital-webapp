@@ -13,7 +13,6 @@ const Chat = (props) => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const hospital = useSelector((state) => state.hospital);
   const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
   const {hospitalId} = user;
@@ -45,7 +44,7 @@ const Chat = (props) => {
       if (res.data) setMessages(res.data);
     };
     getMessages();
-    const newSocket = io("https://hospital-backend-production-4a93.up.railway.app", {
+    const newSocket = io("https://hospital-backend-production-d055.up.railway.app", {
       transports: ["websocket"],
     });
     setSocket(newSocket);
