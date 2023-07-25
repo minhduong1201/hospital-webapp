@@ -13,9 +13,9 @@ import { useDispatch } from "react-redux";
 
 import { publicRequest } from "../requestMethod";
 import { register } from "../redux/apiCalls";
+import { alertError } from "../utils/tools";
 
 const RegistrationForm = () => {
-  const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -38,7 +38,22 @@ const RegistrationForm = () => {
     }));
   };
 
+
+  const isFormNotValid = () => {
+    const { name, username, password, phone, address, age, img } = formData;
+    let error = null;
+    if (phone.length < 10) error="Số điện thoại không hợp lệ ( nhỏ hơn 10 chữ số)";
+    if (password.length < 5) error="Mật khẩu phải nhiều hơn 5 ký tự";
+    if (username == "") error="Trường tên đăng nhập không thể để trống!";
+    if (name == "") error="Trường tên không thể để trống!";
+  
+    if(error) alertError(dispatch, error);
+    return error;
+  }
+
   const handleSubmit = (event) => {
+    event.preventDefault();
+    if (isFormNotValid()) return;
     const form = new FormData();
     const { name, username, password, phone, address, age, img } = formData;
     form.append("name", name);
@@ -130,16 +145,15 @@ const RegistrationForm = () => {
         />
       </FormControl>
       <FormControl>
-        {/* <InputLabel htmlFor="img-input">Ảnh đại diện</InputLabel> */}
-        <span>Ảnh đại diện</span>
-        <Input
-          id="img-input"
-          name="img"
-          type="file"
-          // value={formData.img}
-          onChange={handleChange}
-        />
-        {/* <input type="file" id="img-input" name="img" onChange={handleChange} /> */}
+        <div style={{ width: "50%", margin: '0 auto' }}>
+          <span>Ảnh đại diện</span>
+          <input
+            id="img-input"
+            name="img"
+            type="file"
+            onChange={handleChange}
+          />
+        </div>
       </FormControl>
       <Button type="submit" variant="contained" color="primary">
         Đăng ký
