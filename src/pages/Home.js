@@ -59,7 +59,7 @@ function HomePage({ user, accessToken }) {
             })}
           >
             <div style={{ fontSize: 24, marginTop: -5 }}>
-              {heartRate.value || "Chưa có dữ liệu"}
+              {heartRate.value == null || heartRate.value == undefined ? "Chưa có dữ liệu" : heartRate.value}
             </div>
             <div style={{ fontSize: 12, marginTop: 5 }}>
               <FaHeart />
