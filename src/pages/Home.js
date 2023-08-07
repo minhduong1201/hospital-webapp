@@ -30,7 +30,6 @@ function HomePage({ user, accessToken }) {
 
   return (
     <div style={{ padding: "0 10px" }}>
-      <h2>Trang chủ</h2>
       <h3>
         Nhịp tim:{" "}
         {heartRate.value == null || heartRate.value == undefined
